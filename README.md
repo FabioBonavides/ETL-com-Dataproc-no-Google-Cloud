@@ -9,10 +9,10 @@ O Dataproc irá consultar o script que está no arquivo local.py armazenado no b
 =======================================
 
 Overview
-
+--------------------------
 This Python script is an example of an ETL (Extract, Transform, Load) process using Apache Spark with PySpark. The script reads data from two JSON files, performs some basic data exploration, enriches the data through a SQL join operation, and finally, saves the enriched data in the Parquet format. The ETL process involves the following steps:
 
---Initialization:-- Import necessary libraries, create a SparkSession, configure Spark parameters, and set the log level.
+*Initialization:* Import necessary libraries, create a SparkSession, configure Spark parameters, and set the log level.
 
 Input: Define file paths for input JSON files and read data into Spark DataFrames.
 
