@@ -6,3 +6,4 @@ gcloud dataproc batches submit pyspark gs://code-repositorio/local.py --batch=ba
 
 O Dataproc irá consultar o script que está no arquivo local.py armazenado no bucket code-repositorio do GCP.
 
+-----------------------------------------
