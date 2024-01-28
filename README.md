@@ -2,8 +2,9 @@ ETL com Dataproc - Google Cloud
 ===================================
 ## Submeter um job no Dataproc serverless [Apache spark]
 ### Digitar o seguinte código para iniciar o job no Dataproc:
+```
 gcloud dataproc batches submit pyspark gs://code-repositorio/local.py --batch=batch-01 --deps-bucket=code-repositorio --region=us-east1
-
+```
 O Dataproc irá consultar o script que está no arquivo local.py armazenado no bucket code-repositorio do GCP.
 
 Overview
@@ -35,11 +36,74 @@ Ocorre a importação das bibliotecas necessárias, incluindo SparkSession e Spa
 
 ## 2. Inicializar a SparkSession e Congigurar os parâmetros.
 ```
-    spark = SparkSession \
-            .builder \
-            .appName("etl-yelp-py") \
-            .getOrCreate()
+spark = SparkSession \
+        .builder \
+        .appName("etl-yelp-py") \
+        .getOrCreate()
 
-   print(SparkConf().getAll())
-   spark.sparkContext.setLogLevel("INFO")
+print(SparkConf().getAll())
+spark.sparkContext.setLogLevel("INFO")
 ```
+A SparkSession é criada com a aplicação de nome "etl-yelp-py", e os parâmetros das condigurações são impressos. Além disso, o log level é "setado" como INFO.
+
+## 3. Input - Read Data
+```
+get_device_file = "landing-zone/files/device/*.json"
+get_subscription_file = "landing-zone/files/subscription/*.json"
+
+df_device = spark.read \
+    .format("json") \
+    .option("inferSchema", "true") \
+    .option("header", "true") \
+    .json(get_device_file)
+
+df_subscription = spark.read \
+    .format("json") \
+    .option("inferSchema", "true") \
+    .option("header", "true") \
+    .json(get_subscription_file)
+```
+Nessa parte, são definidos os caminhos para o acesso e a leitura dos arquivos em JSON (df_device e df_subscription).
+
+## 4. Data Exploration
+```
+print(df_device.rdd.getNumPartitions())
+print(df_subscription.rdd.getNumPartitions())
+
+df_device.printSchema()
+df_subscription.printSchema()
+
+df_device.show()
+df_subscription.show()
+
+print(df_device.count())
+print(df_subscription.count())
+```
+Imprimir informações sobre os DataFrames, incluindo o número de partições, esquema, sample data e contagem de número de linhas.
+
+## 5. Data Registration
+```
+df_device.createOrReplaceTempView("vw_device")
+df_subscription.createOrReplaceTempView("vw_subscription")
+```
+Ragistrar os DataFrames como um SQL views temporário.
+
+## 6. Enrichment - SQL Join Operation (operação de Join)
+```
+df_join = spark.sql("""
+    SELECT device.user_id,
+            device.model, 
+            device.platform, 
+            device.manufacturer,
+            subscription.payment_method,
+            subscription.plan,
+            subscription.subscription_term
+    FROM vw_device AS device
+    INNER JOIN vw_subscription AS subscription
+    ON device.user_id = subscription.user_id
+""")
+```
+Realiza um SQL join para unir os DataFrames e criar um novo DataFrame (df_join).
+
+## 7. Output - Write Enriched Data to Parquet (gravar o novo DataFrame em formato Parquet) 
+
