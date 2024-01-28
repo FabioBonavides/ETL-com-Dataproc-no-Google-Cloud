@@ -21,9 +21,18 @@ if __name__ == '__main__':
 
     # 1 = input
     # Read data
-    df_device = spark.read.format("json").option("inferSchema", "true").option("header", "true").json(get_device_file)
-    df_subscription = spark.read.format("json").option("inferSchema", "true").option("header", "true").json(get_subscription_file)
+    df_device = spark.read \
+        .format("json") \
+        .option("inferSchema", "true") \
+        .option("header", "true") \
+        .json(get_device_file)
 
+    df_subscription = spark.read \
+        .format("json") \
+        .option("inferSchema", "true") \
+        .option("header", "true") \
+        .json(get_subscription_file)
+ 
     # Print number of partitions
     print(df_device.rdd.getNumPartitions())
     print(df_subscription.rdd.getNumPartitions())
