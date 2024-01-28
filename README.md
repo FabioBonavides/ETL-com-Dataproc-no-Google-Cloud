@@ -2,7 +2,7 @@ ETL com Dataproc - Google Cloud
 ===================================
 ## Submeter um job no Dataproc serverless [Apache spark]
 ### Digitar o seguinte código para iniciar o job no Dataproc:
-gcloud dataproc batches submit pyspark gs://code-repositorio/local.py --batch=batch-01 --deps-bucket=owshq-code-repositorio --region=us-east1
+gcloud dataproc batches submit pyspark gs://code-repositorio/local.py --batch=batch-01 --deps-bucket=code-repositorio --region=us-east1
 
 O Dataproc irá consultar o script que está no arquivo local.py armazenado no bucket code-repositorio do GCP.
 
@@ -31,4 +31,15 @@ Code Breakdown
 from pyspark.sql import SparkSession
 from pyspark import SparkConf
 ```
+Ocorre a importação das bibliotecas necessárias, incluindo SparkSession e Sparkconf do PySpark.
 
+## 2. Inicializar a SparkSession e Congigurar os parâmetros.
+```
+    spark = SparkSession \
+            .builder \
+            .appName("etl-yelp-py") \
+            .getOrCreate()
+
+   print(SparkConf().getAll())
+   spark.sparkContext.setLogLevel("INFO")
+```
