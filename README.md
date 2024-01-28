@@ -6,8 +6,6 @@ gcloud dataproc batches submit pyspark gs://code-repositorio/local.py --batch=ba
 
 O Dataproc irá consultar o script que está no arquivo local.py armazenado no bucket code-repositorio do GCP.
 
-=======================================
-
 Overview
 --------------------------
 This Python script is an example of an ETL (Extract, Transform, Load) process using Apache Spark with PySpark. The script reads data from two JSON files, performs some basic data exploration, enriches the data through a SQL join operation, and finally, saves the enriched data in the Parquet format. The ETL process involves the following steps:
@@ -26,13 +24,11 @@ This Python script is an example of an ETL (Extract, Transform, Load) process us
 
 **Cleanup:** Stop the SparkSession.
 
-================================
-
 Code Breakdown
 ---------------------------
 ## 1. Importar bibliotecas
-
+```
 from pyspark.sql import SparkSession
 from pyspark import SparkConf
-
+```
 
