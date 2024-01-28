@@ -9,6 +9,8 @@ O Dataproc irá consultar o script que está no arquivo local.py armazenado no b
 
 Overview
 --------------------------
+O presente script é um exemplo de processo ETL (Extract, Transform, Load) usando Apache Spark com PySpark. O script lê dados de dois arquivos JSON, realiza algumas explorações básicas de dados, enriquece os dados por meio de uma operação de junção SQL e, por fim, salva os dados enriquecidos no formato Parquet. O processo ETL envolve as seguintes etapas:
+
 This Python script is an example of an ETL (Extract, Transform, Load) process using Apache Spark with PySpark. The script reads data from two JSON files, performs some basic data exploration, enriches the data through a SQL join operation, and finally, saves the enriched data in the Parquet format. The ETL process involves the following steps:
 
 **Initialization:** Import necessary libraries, create a SparkSession, configure Spark parameters, and set the log level.
@@ -106,4 +108,18 @@ df_join = spark.sql("""
 Realiza um SQL join para unir os DataFrames e criar um novo DataFrame (df_join).
 
 ## 7. Output - Write Enriched Data to Parquet (gravar o novo DataFrame em formato Parquet) 
+```
+df_join.write.format("parquet").mode("overwrite").save("curated-zone/ds_yelp")
+```
+O dado enriquecido é salvo no formato Parquet no diretório especificado, ocorrendo o sobrescrição dos dados.
 
+## 8. Stop SparkSession
+```
+spark.stop()
+```
+SparkSession é encerrada.
+
+## Conclusão:
+Este script PySpark apresenta um pipeline ETL básico para dados do Yelp, demonstrando a facilidade e o poder do PySpark no tratamento de transformações de dados em grande escala.
+
+This PySpark script showcases a basic ETL pipeline for Yelp data, demonstrating the ease and power of PySpark in handling large-scale data transformations. 
