@@ -36,7 +36,7 @@ from pyspark import SparkConf
 ```
 Ocorre a importação das bibliotecas necessárias, incluindo SparkSession e Sparkconf do PySpark.
 
-## 2. Inicializar a SparkSession e Congigurar os parâmetros.
+## 2. Inicializar a SparkSession e Configurar os parâmetros.
 ```
 spark = SparkSession \
         .builder \
